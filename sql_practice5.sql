@@ -33,6 +33,35 @@ FROM customer_contracts as a
   On a.product_id = b.product_id
 Group by a.customer_id
 HAVING count(distinct b.product_category) = 3
+-- Ex 5
+Select a.employee_id, name, reports_count, average_age
+From(
+      Select reports_to as employee_id,
+             count(employee_id) as reports_count,
+             round(avg(age)) as average_age
+      From Employees
+      Group by reports_to
+      Having reports_to is not null 
+) as a
+Left join Employees as b
+On a.employee_id = b.employee_id
+Order by employee_id
+-- Ex 6
+Select a.product_name, sum(b.unit) as unit
+From Products as a
+Right Join Orders as b
+On a.product_id = b.product_id
+Where year(order_date) = 2020 
+       AND month(order_date) = 02
+Group by product_name
+Having sum(b.unit) >= 100
+-- Ex 7
+SELECT a.page_id
+FROM pages as a
+   LEFT JOIN page_likes as b
+   On a.page_id = b.page_id
+   Where b.page_id is NULL
+	
 --MID COURSE
   
 -- EX1
